@@ -1,0 +1,16 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+
+  - name: install apache package
+    yum:
+     name: httpd
+     state: present
+  
+  - name: Ensure http is running
+    service:
+     name: httpd
+     state: started

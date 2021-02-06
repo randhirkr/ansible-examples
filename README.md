@@ -14,3 +14,8 @@ ansible all -m ping
 ansible all -m gather_facts
 ansible all -m gather_facts --limit 10.145.231.4
 ```
+
+Anisble playbook command:
+```
+ansible-playbook install-httpd.yml
+```
