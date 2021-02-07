@@ -19,3 +19,8 @@ Anisble playbook command:
 ```
 ansible-playbook install-httpd.yml
 ```
+
+add-users playbook adds users with sudo permission and also copies its ssh key
+```
+ansible-playbook add-users.yml
+```
