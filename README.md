@@ -24,3 +24,6 @@ add-users playbook adds users with sudo permission and also copies its ssh key
 ```
 ansible-playbook add-users.yml
 ```
+
+#### Reference:
+https://wiki.learnlinux.tv/index.php/Getting_Started_with_Ansible_13_-_Managing_Users
