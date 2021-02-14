@@ -3,7 +3,7 @@
 - hosts: all
   become: true
   tasks:
-  - include_vars: new-users.yml
+  - include_vars: users.yml
 
   - name: create users
     user: name="{{ item.username }}"

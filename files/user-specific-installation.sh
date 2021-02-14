@@ -12,3 +12,5 @@ chmod u=rwx,g=rx,o=rx ~
 curl -o install.sh https://raw.githubusercontent.com/c9/install/master/install.sh
 bash install.sh
 
+pip3 install virtualenv --user
+
