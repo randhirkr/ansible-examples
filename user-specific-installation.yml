@@ -1,0 +1,34 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+  - include_vars: new-users.yml
+
+  - name: create users
+    user: name="{{ item.username }}"
+    with_items: "{{ users }}"
+
+
+  - name: add ssh key for ansible user
+    authorized_key: user="{{ item.username }}" key="{{ lookup('file', 'pub-keys/{{ item.username }}.pub') }}"
+    with_items: "{{ users }}"
+
+  - name: copy script to user home directory
+    become_user: "{{ item.username }}"
+    become_flags: -i
+    copy:
+     src: user-specific-installation.sh
+     dest: ~/user-specific-installation.sh
+     mode: a+x
+    with_items: "{{ users }}"
+
+  - name: execute script in user home directory
+    become_user: "{{ item.username }}"
+    become_flags: -i
+    shell: /home/{{ item.username }}/user-specific-installation.sh
+    args:
+      executable: /bin/bash
+    with_items: "{{ users }}"
+
+
