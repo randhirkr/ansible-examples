@@ -1,0 +1,20 @@
+---
+
+- hosts: cloud9_bastion
+  become: true
+  tasks:
+  - include_vars: users.yml
+
+  - name: create users
+    user: name="{{ item.username }}"
+    with_items: "{{ users }}"
+
+
+  - name: add ssh key for ansible user
+    authorized_key: user="{{ item.username }}" key="{{ lookup('file', 'pub-keys/{{ item.username }}_cloud9.pub') }}" 
+    with_items: "{{ users }}"
+
+  - name: install nc
+    yum: 
+      name: nc
+      state: present

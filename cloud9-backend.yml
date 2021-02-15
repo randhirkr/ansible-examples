@@ -1,0 +1,40 @@
+---
+
+- hosts: cloud9_backend
+  become: true
+  tasks:
+  - include_vars: users.yml
+
+  - name: create users
+    user: name="{{ item.username }}"
+    with_items: "{{ users }}"
+
+
+  - name: add ssh key for ansible user
+    authorized_key: user="{{ item.username }}" key="{{ lookup('file', 'pub-keys/{{ item.username }}.pub') }}"
+    with_items: "{{ users }}"
+
+  - name: copy script to user home directory
+    become_user: "{{ item.username }}"
+    become_flags: -i
+    copy:
+     src: cloud9-backend.sh
+     dest: ~/cloud9-backend.sh
+     mode: a+x
+    with_items: "{{ users }}"
+
+  - name: execute script in user home directory
+    become_user: "{{ item.username }}"
+    become_flags: -i
+    shell: /home/{{ item.username }}/cloud9-backend.sh
+    args:
+      executable: /bin/bash
+    with_items: "{{ users }}"
+
+  - name: delete script from user home directory
+    become_user: "{{ item.username }}"
+    become_flags: -i
+    file: 
+      path: /home/{{ item.username }}/cloud9-backend.sh
+      state: absent
+    with_items: "{{ users }}"
